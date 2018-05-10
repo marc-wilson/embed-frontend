@@ -1,0 +1,17 @@
+section {
+  display: grid;
+  grid-template-areas: "nav"
+                       "main";
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  nav {
+    grid-area: nav;
+    div {
+      cursor: pointer;
+      outline: none;
+    }
+  }
+  main {
+    grid-area: main;
+  }
+}

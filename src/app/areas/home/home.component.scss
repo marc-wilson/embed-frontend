@@ -1,0 +1,32 @@
+section {
+  display: grid;
+  align-items: center;
+  height: 100vh;
+  main {
+    width: 60%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+    mat-card {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      justify-content: center;
+      opacity: .7;
+      &:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+      mat-icon {
+        margin: auto;
+        font-size: 90px;
+        height: 90px;
+        width: 90px;
+      }
+      div {
+        text-align: center;
+        padding: 5px 0;
+      }
+    }
+  }
+}
