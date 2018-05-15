@@ -5,24 +5,49 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModelComponent } from './areas/model/model.component';
-import { MatCardModule, MatIconModule, MatToolbarModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatIconModule,
+  MatInputModule, MatListModule, MatSelectModule,
+  MatStepperModule,
+  MatToolbarModule
+} from '@angular/material';
 import { HomeComponent } from './areas/home/home.component';
+import { NewConnectionDailogComponent } from './shared/dialogs/new-connection-dailog/new-connection-dailog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModelComponent,
-    HomeComponent
+    HomeComponent,
+    NewConnectionDailogComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
     MatIconModule,
-    MatCardModule
+    MatToolbarModule,
+    MatListModule,
+    MatSelectModule,
+    MatStepperModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+  ],
+  entryComponents: [
+    NewConnectionDailogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
