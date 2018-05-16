@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModelComponent } from './areas/model/model.component';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatCheckboxModule,
   MatDialogModule,
   MatIconModule,
   MatInputModule, MatListModule, MatSelectModule,
@@ -34,6 +34,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatIconModule,
     MatToolbarModule,

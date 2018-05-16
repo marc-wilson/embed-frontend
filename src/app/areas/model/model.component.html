@@ -1,3 +1,14 @@
-<p>
-  model works!
-</p>
+<section>
+  <div *ngIf="collections" id="collectionContainer">
+    <mat-card *ngFor="let collection of collections" class="collection">
+      <div class="collection-header">
+        <div class="mat-body-2">{{collection.collection}}</div>
+        <mat-icon>drag_indicator</mat-icon>
+      </div>
+      <div *ngFor="let field of collection.fields" class="field">
+        <mat-checkbox>{{field}}</mat-checkbox>
+        <mat-icon>link</mat-icon>
+      </div>
+    </mat-card>
+  </div>
+</section>

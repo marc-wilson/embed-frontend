@@ -23,4 +23,9 @@ export class DatabaseService {
     const res = await this.httpClient.post(`${environment.apiPath}/database/databases/collections`, config).toPromise();
     return res;
   }
+  async getBulkCollectionInfo(config: MongoDBConnection) {
+    const res = await this.httpClient.post(`${environment.apiPath}/database/databases/collections/bulkinfo`, config)
+      .toPromise();
+    return res;
+  }
 }

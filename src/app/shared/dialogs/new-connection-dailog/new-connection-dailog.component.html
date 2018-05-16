@@ -30,11 +30,12 @@
     <ng-template matStepLabel>Sources</ng-template>
     <section>
       <mat-selection-list #collectionsList>
-        <mat-list-option *ngFor="let collection of collections">
+        <mat-list-option *ngFor="let collection of collections" [value]="collection">
           {{collection.name}}
         </mat-list-option>
       </mat-selection-list>
       {{collectionsList.selectedOptions.selected.length}}
+      <button mat-raised-button (click)="save()">Save</button>
     </section>
   </mat-step>
 </mat-horizontal-stepper>
