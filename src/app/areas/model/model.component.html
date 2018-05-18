@@ -1,14 +1,36 @@
-<section>
-  <div *ngIf="collections" id="collectionContainer">
-    <mat-card *ngFor="let collection of collections" class="collection">
-      <div class="collection-header">
-        <div class="mat-body-2">{{collection.collection}}</div>
-        <mat-icon>drag_indicator</mat-icon>
+<mat-sidenav-container #sidenav>
+  <mat-sidenav mode="side">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let collection of collections">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{collection.collection}}</mat-panel-title>
+          <mat-panel-description></mat-panel-description>
+        </mat-expansion-panel-header>
+        <div id="fieldsContainer">
+          <div *ngFor="let field of collection.fields" class="field-container" draggable="true" (dragstart)="onDragStart($event, collection.collection, field)">
+            <div class="mat-body-1">{{field}}</div>
+            <div class="dragger">
+              <mat-icon>more_vert</mat-icon>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div id="dropZone" (drop)="onDrop($event)" (dragover)="allowDrop($event)">
+      <div id="noColumns" *ngIf="displayColumns.length === 0">
+        Drag and Drop a field to get started
       </div>
-      <div *ngFor="let field of collection.fields" class="field">
-        <mat-checkbox>{{field}}</mat-checkbox>
-        <mat-icon>link</mat-icon>
-      </div>
-    </mat-card>
-  </div>
-</section>
+      <table mat-table #table [dataSource]="dataSource" *ngIf="displayColumns.length > 0">
+        <ng-container *ngFor="let column of displayColumns" [matColumnDef]="column">
+          <th mat-header-cell *matHeaderCellDef>{{column}}</th>
+          <td mat-cell *matCellDef="let element;">{{element[column]}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+      </table>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

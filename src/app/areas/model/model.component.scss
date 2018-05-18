@@ -1,31 +1,17 @@
-#collectionContainer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-  justify-items: center;
-  mat-card {
-    width: 200px;
-    height: auto;
-    max-height: 400px;
-    overflow-x: scroll;
-    .collection-header {
+mat-sidenav-container {
+  height: 100%;
+  mat-sidenav {
+    width: 250px;
+  }
+  #fieldsContainer {
+    .field-container {
       display: grid;
       grid-template-columns: 1fr auto;
-      margin: 0 0 10px 0;
-      mat-icon {
-        cursor: grab;
-      }
     }
-    .field {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      mat-icon {
-        cursor: pointer;
-        opacity: 0.7;
-        &:hover {
-          opacity: 1;
-        }
-      }
+  }
+  #dropZone {
+    table {
+      width: 100%;
     }
   }
 }

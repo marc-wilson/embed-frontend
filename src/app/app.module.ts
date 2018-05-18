@@ -8,10 +8,10 @@ import { ModelComponent } from './areas/model/model.component';
 import {
   MatButtonModule,
   MatCardModule, MatCheckboxModule,
-  MatDialogModule,
+  MatDialogModule, MatExpansionModule,
   MatIconModule,
-  MatInputModule, MatListModule, MatSelectModule,
-  MatStepperModule,
+  MatInputModule, MatListModule, MatSelectModule, MatSidenavModule,
+  MatStepperModule, MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 import { HomeComponent } from './areas/home/home.component';
@@ -36,10 +36,13 @@ import { HttpClientModule } from '@angular/common/http';
     MatCardModule,
     MatCheckboxModule,
     MatDialogModule,
+    MatExpansionModule,
     MatIconModule,
+    MatTableModule,
     MatToolbarModule,
     MatListModule,
     MatSelectModule,
+    MatSidenavModule,
     MatStepperModule,
     MatInputModule,
     ReactiveFormsModule

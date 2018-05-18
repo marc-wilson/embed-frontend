@@ -28,4 +28,9 @@ export class DatabaseService {
       .toPromise();
     return res;
   }
+  async getSampleData(config: MongoDBConnection, mapping) {
+    console.log(mapping);
+    const res = await this.httpClient.post(`${environment.apiPath}/database/query`, { config: config, mapping: mapping }).toPromise();
+    return res;
+  }
 }
