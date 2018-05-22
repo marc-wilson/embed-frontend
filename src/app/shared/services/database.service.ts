@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MongoDBConnection } from '../models/connections/mongo-dbconnection';
 import { environment } from '../../../environments/environment';
+import { MongoMapping } from '../models/mapping/mongo-mapping';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class DatabaseService {
       .toPromise();
     return res;
   }
-  async getSampleData(config: MongoDBConnection, mapping) {
+  async getSampleData(config: MongoDBConnection, mapping: MongoMapping) {
     console.log(mapping);
     const res = await this.httpClient.post(`${environment.apiPath}/database/query`, { config: config, mapping: mapping }).toPromise();
     return res;

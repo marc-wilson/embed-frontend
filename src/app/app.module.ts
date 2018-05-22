@@ -7,10 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModelComponent } from './areas/model/model.component';
 import {
   MatButtonModule,
-  MatCardModule, MatCheckboxModule,
+  MatCardModule, MatCheckboxModule, MatChipsModule,
   MatDialogModule, MatExpansionModule,
   MatIconModule,
-  MatInputModule, MatListModule, MatSelectModule, MatSidenavModule,
+  MatInputModule, MatListModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule,
   MatStepperModule, MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -18,13 +18,15 @@ import { HomeComponent } from './areas/home/home.component';
 import { NewConnectionDailogComponent } from './shared/dialogs/new-connection-dailog/new-connection-dailog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModelComponent,
     HomeComponent,
-    NewConnectionDailogComponent
+    NewConnectionDailogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -35,6 +37,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatChipsModule,
     MatDialogModule,
     MatExpansionModule,
     MatIconModule,
@@ -43,6 +46,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatListModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatStepperModule,
     MatInputModule,
     ReactiveFormsModule
@@ -50,6 +54,7 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
   ],
   entryComponents: [
+    ConfirmDialogComponent,
     NewConnectionDailogComponent
   ],
   bootstrap: [AppComponent]

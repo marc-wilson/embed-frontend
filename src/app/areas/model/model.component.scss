@@ -1,12 +1,20 @@
 mat-sidenav-container {
   height: 100%;
   mat-sidenav {
-    width: 250px;
+    width: 300px;
+    mat-panel-title {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .primary-container {
+      padding: 10px 0;
+    }
   }
   #fieldsContainer {
     .field-container {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr auto auto;
     }
   }
   #dropZone {

@@ -3,9 +3,20 @@
     <mat-accordion>
       <mat-expansion-panel *ngFor="let collection of collections">
         <mat-expansion-panel-header>
-          <mat-panel-title>{{collection.collection}}</mat-panel-title>
-          <mat-panel-description></mat-panel-description>
+          <mat-panel-title>
+            <div>
+              <mat-icon [color]="collection.primary ? 'primary' : ''">stars</mat-icon>
+            </div>
+            <div>
+              {{collection.collection}}
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
         </mat-expansion-panel-header>
+        <div class="primary-container">
+          <mat-slide-toggle [checked]="collection.primary" (change)="onPrimaryCollectionChange(collection)">Primary Collection</mat-slide-toggle>
+        </div>
         <div id="fieldsContainer">
           <div *ngFor="let field of collection.fields" class="field-container" draggable="true" (dragstart)="onDragStart($event, collection.collection, field)">
             <div class="mat-body-1">{{field}}</div>
