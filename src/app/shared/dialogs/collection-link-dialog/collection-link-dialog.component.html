@@ -1,0 +1,15 @@
+<section>
+  <mat-form-field *ngIf="data">
+    <mat-select placeholder="Primary Field" [(ngModel)]="primaryField">
+      <mat-option *ngFor="let field of data.primaryCollectionFields" [value]="field">{{field}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="data">
+    <mat-select placeholder="Local Field" [(ngModel)]="localField">
+      <mat-option *ngFor="let field of data.currentCollectionFields" [value]="field">{{field}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</section>
+<section>
+  <button mat-raised-button (click)="ok()">OK</button>
+</section>

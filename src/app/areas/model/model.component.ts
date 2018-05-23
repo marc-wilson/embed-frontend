@@ -5,6 +5,7 @@ import { MongoDBConnection } from '../../shared/models/connections/mongo-dbconne
 import { DatabaseService } from '../../shared/services/database.service';
 import { MongoMapping } from '../../shared/models/mapping/mongo-mapping';
 import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { CollectionLinkDialogComponent } from '../../shared/dialogs/collection-link-dialog/collection-link-dialog.component';
 
 @Component({
   selector: 'app-model',
@@ -24,9 +25,7 @@ export class ModelComponent implements OnInit {
   constructor(_matDialog: MatDialog, _databaseService: DatabaseService) {
     this.matDialog = _matDialog;
     this.databaseService = _databaseService;
-    this.dataSource = new MatTableDataSource<any>([
-      { test: '0', test1: '1', test2: '2' }
-    ]);
+    this.dataSource = new MatTableDataSource<any>([]);
     const dialogRef = this.matDialog.open(NewConnectionDailogComponent, {});
     dialogRef.afterClosed().subscribe( config => {
       this.config = config;
@@ -37,44 +36,72 @@ export class ModelComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
   async loadSelectedCollectionsInfo(config: MongoDBConnection) {
     const res: any = await this.databaseService.getBulkCollectionInfo(config);
+    res.forEach( c => c.primary = false);
     this.collections = res;
   }
   onDragStart(evt, collection, field): void {
     evt.dataTransfer.setData('text', JSON.stringify({ collection: collection, field: field } ));
-    console.log(evt);
   }
   async onDrop(evt) {
     evt.preventDefault();
-    const colObj: { collection: string, field: string } = JSON.parse(evt.dataTransfer.getData('text'));
-    this.selectedFields.push(colObj);
-    this.displayColumns.push(colObj.field);
-    if (this.mapping.view.length === 0) {
+    const droppedField = JSON.parse(evt.dataTransfer.getData('text'));
+    const collection = this.collections.find( c => c.collection === droppedField.collection);
+    if (!this.mapping.getPrimaryCollection()) {
       const dialogRef = this.matDialog.open(ConfirmDialogComponent);
-      dialogRef.afterClosed().subscribe( _res => {
+      dialogRef.afterClosed().subscribe( async _res => {
         if (_res) {
-          this.mapping.addMapping(colObj);
-          this.onPrimaryCollectionChange(colObj);
+          collection.primary = true;
+          droppedField.primary = true;
+          this.mapping.addMapping(droppedField);
+          this.displayColumns = this.mapping.getDisplayColumns();
+          const data: any = await this.databaseService.getSampleData(this.config, this.mapping);
+          this.dataSource = new MatTableDataSource<any>(data);
         }
       });
+    } else {
+      if (this.mapping.doesCollectionExist(droppedField.collection)) {
+        this.mapping.addMapping(droppedField);
+        this.displayColumns = this.mapping.getDisplayColumns();
+        const data: any = await this.databaseService.getSampleData(this.config, this.mapping);
+        this.dataSource = new MatTableDataSource<any>(data);
+      } else {
+        const dialogRef = this.matDialog.open(CollectionLinkDialogComponent, {
+          data: {
+            primaryCollectionFields: this.mapping.getPrimaryCollection().fields,
+            currentCollectionFields: this.collections.find( c => c.collection === droppedField.collection).fields
+          }
+        });
+        dialogRef.afterClosed().subscribe( async _res => {
+          if (_res) {
+            console.log(_res);
+            droppedField.localField = _res.localField;
+            droppedField.foreignField = _res.primaryField;
+            this.mapping.addMapping(droppedField);
+            this.displayColumns = this.mapping.getDisplayColumns();
+            const data: any = await this.databaseService.getSampleData(this.config, this.mapping);
+            this.dataSource = new MatTableDataSource<any>(data);
+
+          }
+        });
+      }
     }
 
-    // const data: any = await this.databaseService.getSampleData(this.config, this.mapping);
-    // this.dataSource = new MatTableDataSource<any>(data);
+
+
   }
   allowDrop(evt): void {
     evt.preventDefault();
   }
   onPrimaryCollectionChange(collection) {
-    this.collections.forEach( c => { c.primary = false; });
-    collection.primary = !collection.primary;
-    if (this.mapping.view.length > 0) {
-      this.mapping.view.forEach( c => { c.primary = false; } );
-      const col = this.mapping.view.find( c => c.name === collection.collection );
-      col.primary = !col.primary;
-    }
+    // this.collections.forEach( c => { c.primary = false; });
+    // // collection.primary = !collection.primary;
+    // if (this.mapping.view.length > 0) {
+    //   this.mapping.view.forEach( c => { c.primary = false; } );
+    //   const col = this.mapping.view.find( c => c.name === collection.collection );
+    //   col.primary = !col.primary;
+    // }
   }
 }

@@ -19,6 +19,7 @@ import { NewConnectionDailogComponent } from './shared/dialogs/new-connection-da
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { CollectionLinkDialogComponent } from './shared/dialogs/collection-link-dialog/collection-link-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-
     ModelComponent,
     HomeComponent,
     NewConnectionDailogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    CollectionLinkDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -55,6 +57,7 @@ import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-
   ],
   entryComponents: [
     ConfirmDialogComponent,
+    CollectionLinkDialogComponent,
     NewConnectionDailogComponent
   ],
   bootstrap: [AppComponent]
