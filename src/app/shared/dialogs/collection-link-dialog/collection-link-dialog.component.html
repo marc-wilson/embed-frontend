@@ -9,6 +9,14 @@
       <mat-option *ngFor="let field of data.currentCollectionFields" [value]="field">{{field}}</mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Group" [(ngModel)]="groupFunction">
+      <mat-option [value]="null">None</mat-option>
+      <mat-option value="sum">SUM</mat-option>
+      <mat-option value="avg">AVG</mat-option>
+      <mat-option value="count">COUNT</mat-option>
+    </mat-select>
+  </mat-form-field>
 </section>
 <section>
   <button mat-raised-button (click)="ok()">OK</button>

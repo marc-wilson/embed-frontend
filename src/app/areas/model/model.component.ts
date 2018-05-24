@@ -49,48 +49,45 @@ export class ModelComponent implements OnInit {
     evt.preventDefault();
     const droppedField = JSON.parse(evt.dataTransfer.getData('text'));
     const collection = this.collections.find( c => c.collection === droppedField.collection);
-    if (!this.mapping.getPrimaryCollection()) {
-      const dialogRef = this.matDialog.open(ConfirmDialogComponent);
+    if ( !this.mapping.getPrimaryCollection() ) {
+      const dialogRef = this.matDialog.open( ConfirmDialogComponent );
       dialogRef.afterClosed().subscribe( async _res => {
-        if (_res) {
+        if ( _res ) {
           collection.primary = true;
           droppedField.primary = true;
-          this.mapping.addMapping(droppedField);
+          this.mapping.addMapping( droppedField );
           this.displayColumns = this.mapping.getDisplayColumns();
-          const data: any = await this.databaseService.getSampleData(this.config, this.mapping);
-          this.dataSource = new MatTableDataSource<any>(data);
+          const data: any = await this.databaseService.getSampleData( this.config, this.mapping );
+          this.dataSource = new MatTableDataSource<any>( data );
         }
-      });
+      } );
     } else {
-      if (this.mapping.doesCollectionExist(droppedField.collection)) {
-        this.mapping.addMapping(droppedField);
+      if ( this.mapping.doesCollectionExist( droppedField.collection ) ) {
+        this.mapping.addMapping( droppedField );
         this.displayColumns = this.mapping.getDisplayColumns();
-        const data: any = await this.databaseService.getSampleData(this.config, this.mapping);
-        this.dataSource = new MatTableDataSource<any>(data);
+        const data: any = await this.databaseService.getSampleData( this.config, this.mapping );
+        this.dataSource = new MatTableDataSource<any>( data );
       } else {
-        const dialogRef = this.matDialog.open(CollectionLinkDialogComponent, {
+        const dialogRef = this.matDialog.open( CollectionLinkDialogComponent, {
           data: {
             primaryCollectionFields: this.mapping.getPrimaryCollection().fields,
-            currentCollectionFields: this.collections.find( c => c.collection === droppedField.collection).fields
+            currentCollectionFields: this.collections.find( c => c.collection === droppedField.collection ).fields
           }
-        });
+        } );
         dialogRef.afterClosed().subscribe( async _res => {
-          if (_res) {
-            console.log(_res);
+          if ( _res ) {
+            console.log( _res );
             droppedField.localField = _res.localField;
             droppedField.foreignField = _res.primaryField;
-            this.mapping.addMapping(droppedField);
+            this.mapping.addMapping( droppedField );
             this.displayColumns = this.mapping.getDisplayColumns();
-            const data: any = await this.databaseService.getSampleData(this.config, this.mapping);
-            this.dataSource = new MatTableDataSource<any>(data);
+            const data: any = await this.databaseService.getSampleData( this.config, this.mapping );
+            this.dataSource = new MatTableDataSource<any>( data );
 
           }
-        });
+        } );
       }
     }
-
-
-
   }
   allowDrop(evt): void {
     evt.preventDefault();

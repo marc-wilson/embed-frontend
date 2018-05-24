@@ -11,6 +11,7 @@ export class CollectionLinkDialogComponent implements OnInit {
   public data: any;
   public primaryField: string;
   public localField: string;
+  public groupFunction: string;
   constructor(_matDialogRef: MatDialogRef<CollectionLinkDialogComponent>, @Inject(MAT_DIALOG_DATA) _data: any) {
     this.matDialogRef = _matDialogRef;
     this.data = _data;
