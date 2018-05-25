@@ -29,6 +29,18 @@
     </mat-accordion>
   </mat-sidenav>
   <mat-sidenav-content>
+    <mat-toolbar>
+      <div class="action-icon" (click)="onNewModel()">
+        <mat-icon>add_box</mat-icon>
+      </div>
+      <div class="action-icon" (click)="save()">
+        <mat-icon>save</mat-icon>
+      </div>
+      <div class="action-icon" (click)="open()">
+        <mat-icon>folder</mat-icon>
+      </div>
+    </mat-toolbar>
+    <app-mapping-configuration></app-mapping-configuration>
     <div id="dropZone" (drop)="onDrop($event)" (dragover)="allowDrop($event)">
       <div id="noColumns" *ngIf="displayColumns.length === 0">
         Drag and Drop a field to get started

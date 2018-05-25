@@ -12,13 +12,13 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Connection Information</ng-template>
-    <section id="connectionSettings">
+    <section id="connectionSettings" *ngIf="mapping">
       <div>
         <mat-form-field>
-          <input matInput placeholder="Connection String" [(ngModel)]="connectionConfig.connectionString" (change)="onConnectionStringChanged()"/>
+          <input matInput placeholder="Connection String" [(ngModel)]="mapping.connectionString" (change)="onConnectionStringChanged()"/>
         </mat-form-field>
         <mat-form-field>
-          <mat-select placeholder="Database" [(ngModel)]="connectionConfig.databaseName" (selectionChange)="onDatabaseChange()">
+          <mat-select placeholder="Database" [(ngModel)]="mapping.databaseName" (selectionChange)="onDatabaseChange()">
             <mat-option *ngFor="let database of databases" [value]="database.name">{{database.name}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -31,11 +31,10 @@
     <section>
       <mat-selection-list #collectionsList>
         <mat-list-option *ngFor="let collection of collections" [value]="collection">
-          {{collection.name}}
+          {{collection.collection}}
         </mat-list-option>
       </mat-selection-list>
-      {{collectionsList.selectedOptions.selected.length}}
-      <button mat-raised-button (click)="save()">Save</button>
+      <button mat-raised-button color="primary" (click)="save()">Save</button>
     </section>
   </mat-step>
 </mat-horizontal-stepper>

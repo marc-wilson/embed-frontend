@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MongoDBConnection } from '../models/connections/mongo-dbconnection';
 import { environment } from '../../../environments/environment';
 import { MongoMapping } from '../models/mapping/mongo-mapping';
+import { MongoDBMappingConfiguration } from '../models/mapping/mongo-dbmapping-configuration';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +17,17 @@ export class DatabaseService {
     const res = await this.httpClient.post(`${environment.apiPath}/database/connection/test`, config).toPromise();
     return res;
   }
-  async getDatabases(config: MongoDBConnection) {
-    const res = await this.httpClient.post(`${environment.apiPath}/database/databases`, config).toPromise();
+  async getDatabases(mapping: MongoDBMappingConfiguration) {
+    const res = await this.httpClient.post(`${environment.apiPath}/database/databases`, mapping).toPromise();
     return res;
   }
-  async getCollections(config: MongoDBConnection) {
-    const res = await this.httpClient.post(`${environment.apiPath}/database/databases/collections`, config).toPromise();
-    return res;
+  async getCollections(mapping: MongoDBMappingConfiguration): Promise<{ collection: string }[]> {
+    const res = await this.httpClient.post<any[]>(`${environment.apiPath}/database/databases/collections`, mapping).toPromise();
+    const collections: { collection: string }[] = res.map( c => ({ collection: c.name }));
+    return collections;
   }
-  async getBulkCollectionInfo(config: MongoDBConnection) {
-    const res = await this.httpClient.post(`${environment.apiPath}/database/databases/collections/bulkinfo`, config)
+  async getBulkCollectionInfo(mapping: MongoDBMappingConfiguration) {
+    const res = await this.httpClient.post(`${environment.apiPath}/database/databases/collections/bulkinfo`, mapping)
       .toPromise();
     return res;
   }

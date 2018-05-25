@@ -20,6 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { CollectionLinkDialogComponent } from './shared/dialogs/collection-link-dialog/collection-link-dialog.component';
+import { MappingConfigurationComponent } from './areas/model/mapping-configuration/mapping-configuration.component';
+import { OpenMappingDialogComponent } from './shared/dialogs/open-mapping-dialog/open-mapping-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { CollectionLinkDialogComponent } from './shared/dialogs/collection-link-
     HomeComponent,
     NewConnectionDailogComponent,
     ConfirmDialogComponent,
-    CollectionLinkDialogComponent
+    CollectionLinkDialogComponent,
+    MappingConfigurationComponent,
+    OpenMappingDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -58,7 +62,8 @@ import { CollectionLinkDialogComponent } from './shared/dialogs/collection-link-
   entryComponents: [
     ConfirmDialogComponent,
     CollectionLinkDialogComponent,
-    NewConnectionDailogComponent
+    NewConnectionDailogComponent,
+    OpenMappingDialogComponent
   ],
   bootstrap: [AppComponent]
 })
