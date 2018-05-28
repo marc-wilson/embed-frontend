@@ -1,3 +1,5 @@
-<p>
-  open-mapping-dialog works!
-</p>
+<section *ngIf="mappings">
+  <div *ngFor="let mapping of mappings">
+    <mat-card (click)="openMapping(mapping)">{{mapping.mappingName}}</mat-card>
+  </div>
+</section>

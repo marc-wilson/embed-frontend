@@ -15,6 +15,9 @@
     <section id="connectionSettings" *ngIf="mapping">
       <div>
         <mat-form-field>
+          <input matInput placeholder="Mapping Name" [(ngModel)]="mapping.mappingName" />
+        </mat-form-field>
+        <mat-form-field>
           <input matInput placeholder="Connection String" [(ngModel)]="mapping.connectionString" (change)="onConnectionStringChanged()"/>
         </mat-form-field>
         <mat-form-field>

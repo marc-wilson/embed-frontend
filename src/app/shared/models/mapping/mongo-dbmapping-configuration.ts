@@ -1,10 +1,12 @@
 export class MongoDBMappingConfiguration {
+  public mappingName: string;
   public connectionString: string;
   public databaseName: string;
   public mapping: MongoDBCollectionMapping[];
   public mappingId: string;
   constructor(config?) {
     if (config) {
+      this.mappingName = config.mappingName;
       this.connectionString = config.connectionString;
       this.databaseName = config.databaseName;
       this.mappingId = config.mappingId;

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MatSelectionList, MatStepper } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MongoDBConnection } from '../../models/connections/mongo-dbconnection';
 import { DatabaseService } from '../../services/database.service';
 import {

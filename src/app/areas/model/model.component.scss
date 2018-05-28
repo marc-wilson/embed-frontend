@@ -18,6 +18,8 @@ mat-sidenav-container {
     }
   }
   mat-sidenav-content {
+    display: grid;
+    grid-template-rows: auto 1fr;
     mat-toolbar {
       display: grid;
       grid-template-columns: repeat(12, 1fr);

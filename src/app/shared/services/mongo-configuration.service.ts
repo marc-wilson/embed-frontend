@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MongoDBMappingConfiguration } from '../models/mapping/mongo-dbmapping-configuration';
 import { environment } from '../../../environments/environment';
@@ -8,11 +8,14 @@ import { environment } from '../../../environments/environment';
 })
 export class MongoConfigurationService {
   private _httpClient: HttpClient;
+  public mappingEmitter: EventEmitter<MongoDBMappingConfiguration> = new EventEmitter<MongoDBMappingConfiguration>();
   constructor(_httpClient: HttpClient) {
     this._httpClient = _httpClient;
   }
-  async save(mapping: MongoDBMappingConfiguration): Promise<boolean> {
-    const res = this._httpClient.post<boolean>(`${environment.apiPath}/database/mappings/save`, mapping).toPromise();
+  async save(mapping: MongoDBMappingConfiguration): Promise<MongoDBMappingConfiguration> {
+    const res = this._httpClient.post<MongoDBMappingConfiguration>(
+      `${environment.apiPath}/database/mappings/save`, mapping
+    ).toPromise();
     return res;
   }
   async getMappings(): Promise<MongoDBMappingConfiguration[]> {
@@ -21,7 +24,8 @@ export class MongoConfigurationService {
     ).toPromise();
     return mappings.map( m => new MongoDBMappingConfiguration(m));
   }
-  async open(mappingId: string) {
-
+  async getMapping(mappingId: string) {
+    const mapping = await this._httpClient.get(`${environment.apiPath}/database/mapping/${mappingId}`).toPromise();
+    return new MongoDBMappingConfiguration(mapping);
   }
 }

@@ -21,9 +21,6 @@ export class ModelComponent implements OnInit {
   public collections: { primary: boolean, fields: string[], collection: string }[];
   public dataSource: MatTableDataSource<any>;
   public displayColumns: string[] = [];
-  public selectedFields: { collection: string, field: string }[] = [];
-  public config: MongoDBConnection;
-  // public mapping: MongoMapping;
 
   public mapping: MongoDBMappingConfiguration;
   private _mongoConfigService: MongoConfigurationService;
@@ -33,13 +30,6 @@ export class ModelComponent implements OnInit {
     this.databaseService = _databaseService;
     this.dataSource = new MatTableDataSource<any>([]);
     this._mongoConfigService = _mongoConfigService;
-    // const dialogRef = this.matDialog.open(NewConnectionDailogComponent, {});
-    // dialogRef.afterClosed().subscribe( config => {
-    //   this.config = config;
-    //   this.mapping = new MongoMapping(this.config);
-    //   this.loadSelectedCollectionsInfo(config);
-    //   this.sidenav.open();
-    // } );
   }
 
   ngOnInit() {
@@ -59,10 +49,26 @@ export class ModelComponent implements OnInit {
     res.forEach( c => c.primary = false);
     return res;
   }
-  onDragStart(evt, collection, field): void {
-    evt.dataTransfer.setData('text', JSON.stringify({ collection: collection, field: field } ));
+  async save(): Promise<void> {
+    console.log(this.mapping);
+    const res = await this._mongoConfigService.save(this.mapping);
+    console.log(res);
+  }
+  async open() {
+    const configs = await this._mongoConfigService.getMappings();
+    const dialogRef = this.matDialog.open(OpenMappingDialogComponent, { data: configs });
+    dialogRef.afterClosed().subscribe( async _mapping => {
+      const mapping = await this._mongoConfigService.getMapping(_mapping.mappingId);
+      this.mapping = mapping;
+      this.collections = await this.loadSelectedCollectionsInfo(this.mapping);
+      await this.sidenav.open();
+    });
   }
   async onDrop(evt) {
+    evt.preventDefault();
+    const data = JSON.parse(evt.dataTransfer.getData('text'));
+    console.log(data);
+
     // evt.preventDefault();
     // const droppedField = JSON.parse(evt.dataTransfer.getData('text'));
     // const collection = this.collections.find( c => c.collection === droppedField.collection);
@@ -106,6 +112,9 @@ export class ModelComponent implements OnInit {
     //   }
     // }
   }
+  onDragStart(evt, collection, field): void {
+    evt.dataTransfer.setData('text', JSON.stringify({ collection: collection, field: field } ));
+  }
   allowDrop(evt): void {
     evt.preventDefault();
   }
@@ -118,14 +127,5 @@ export class ModelComponent implements OnInit {
     //   col.primary = !col.primary;
     // }
   }
-  async save(): Promise<void> {
-    console.log(this.mapping);
-    const res = await this._mongoConfigService.save(this.mapping);
-    console.log(res);
-  }
-  async open() {
-    const configs = await this._mongoConfigService.getMappings();
-    console.log(configs);
-    this.matDialog.open(OpenMappingDialogComponent, {});
-  }
+
 }
