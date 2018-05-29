@@ -39,13 +39,22 @@ export class MongoDBMappingConfiguration {
     const now = new Date().getTime();
     return `mapping_${now}`;
   }
+  getPrimaryCollection(): MongoDBCollectionMapping {
+    if (this.mapping && this.mapping.length > 0) {
+      return this.mapping.find( m => m.primary );
+    } else {
+      return null;
+    }
+  }
 }
 
 export class MongoDBCollectionMapping {
   public collectionName: string;
+  public primary: boolean;
   constructor(mapping?) {
     if (mapping) {
-      this.collectionName = mapping.collection || mapping.collectionName;
+      this.collectionName = mapping.collectionName;
+      this.primary = mapping.primary;
     }
   }
 }

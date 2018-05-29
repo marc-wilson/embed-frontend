@@ -65,9 +65,9 @@ export class ModelComponent implements OnInit {
     });
   }
   async onDrop(evt) {
-    evt.preventDefault();
-    const data = JSON.parse(evt.dataTransfer.getData('text'));
-    console.log(data);
+    // evt.preventDefault();
+    // const data = JSON.parse(evt.dataTransfer.getData('text'));
+    // console.log(data);
 
     // evt.preventDefault();
     // const droppedField = JSON.parse(evt.dataTransfer.getData('text'));
