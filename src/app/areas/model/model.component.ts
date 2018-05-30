@@ -33,14 +33,21 @@ export class ModelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._mongoConfigService.mappingEmitter.subscribe( (_mapping: MongoDBMappingConfiguration) => {
+      if (_mapping) {
+        this.mapping = _mapping;
+        const primaryCollection = this.mapping.getPrimaryCollection();
+        console.log('p', primaryCollection);
+      }
+    });
   }
   onNewModel(): void {
     const dialogRef = this.matDialog.open(NewConnectionDailogComponent, {});
     dialogRef.afterClosed().subscribe( async (_mapping: MongoDBMappingConfiguration) => {
       if (_mapping) {
-        this.mapping = _mapping;
-        this.collections = await this.loadSelectedCollectionsInfo(this.mapping);
-        await this.sidenav.open();
+        // this._mongoConfigService.setCurrentMapping(_mapping);
+        // this.collections = await this.loadSelectedCollectionsInfo(_mapping);
+        // await this.sidenav.open();
       }
     });
   }
@@ -50,17 +57,17 @@ export class ModelComponent implements OnInit {
     return res;
   }
   async save(): Promise<void> {
-    console.log(this.mapping);
+    console.log('save-input', this.mapping);
     const res = await this._mongoConfigService.save(this.mapping);
-    console.log(res);
+    console.log('save-output', res);
   }
   async open() {
     const configs = await this._mongoConfigService.getMappings();
     const dialogRef = this.matDialog.open(OpenMappingDialogComponent, { data: configs });
     dialogRef.afterClosed().subscribe( async _mapping => {
       const mapping = await this._mongoConfigService.getMapping(_mapping.mappingId);
-      this.mapping = mapping;
-      this.collections = await this.loadSelectedCollectionsInfo(this.mapping);
+      this._mongoConfigService.setCurrentMapping(mapping);
+      this.collections = await this.loadSelectedCollectionsInfo(mapping);
       await this.sidenav.open();
     });
   }

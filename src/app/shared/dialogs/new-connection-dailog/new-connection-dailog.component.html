@@ -34,7 +34,7 @@
     <section>
       <mat-selection-list #collectionsList>
         <mat-list-option *ngFor="let collection of collections" [value]="collection">
-          {{collection.collection}}
+          {{collection.collectionName}}
         </mat-list-option>
       </mat-selection-list>
       <button mat-raised-button color="primary" (click)="save()">Save</button>

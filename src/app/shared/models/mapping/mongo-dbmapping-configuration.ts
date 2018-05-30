@@ -20,12 +20,10 @@ export class MongoDBMappingConfiguration {
   addMapping(mapping: MongoDBCollectionMapping) {
     this.mapping = this.mapping ? this.mapping : [];
     const matchedCollection = this.doesMappingExist(mapping);
-    if (matchedCollection) {
-      // TODO: Just add the field to the collection
-      console.error('not yet implemented');
-    } else {
+    if (!matchedCollection) {
       this.mapping.push(mapping);
     }
+    console.log('mapping', this.mapping);
   }
   doesMappingExist(mapping: MongoDBCollectionMapping): MongoDBCollectionMapping {
     if (this.mapping) {
@@ -51,10 +49,30 @@ export class MongoDBMappingConfiguration {
 export class MongoDBCollectionMapping {
   public collectionName: string;
   public primary: boolean;
+  public fields: MongoDBField[];
   constructor(mapping?) {
     if (mapping) {
       this.collectionName = mapping.collectionName;
-      this.primary = mapping.primary;
+      this.primary = mapping.primary ? true : false;
+      if (mapping.fields) {
+        mapping.fields.forEach( f => this.addField(f) );
+      } else {
+        this.fields = [];
+      }
+    }
+  }
+  addField(field: MongoDBField) {
+    console.log('addField', field);
+  }
+}
+
+class MongoDBField {
+  public name: string;
+  public selected: boolean;
+  constructor(field?) {
+    if (field) {
+      this.name = field.name;
+      this.selected = field.selected;
     }
   }
 }

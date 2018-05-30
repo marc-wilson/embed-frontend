@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MongoDBMappingConfiguration } from '../../../shared/models/mapping/mongo-dbmapping-configuration';
+import {
+  MongoDBMappingConfiguration
+} from '../../../shared/models/mapping/mongo-dbmapping-configuration';
 import { MatDialog, MatTableDataSource } from '@angular/material';
-import { ConfirmDialogComponent } from '../../../shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { MongoConfigurationService } from '../../../shared/services/mongo-configuration.service';
 
 @Component({
   selector: 'app-mapping-configuration',
@@ -13,8 +15,10 @@ export class MappingConfigurationComponent implements OnInit {
   public dataSource: MatTableDataSource<any>;
   public displayColumns: string[];
   private _matDialog: MatDialog;
-  constructor(_matDialog: MatDialog) {
+  private _mongoConfigService: MongoConfigurationService;
+  constructor(_matDialog: MatDialog, _mongoConfigService: MongoConfigurationService) {
     this._matDialog = _matDialog;
+    this._mongoConfigService = _mongoConfigService;
   }
 
   ngOnInit() {
@@ -24,18 +28,9 @@ export class MappingConfigurationComponent implements OnInit {
   }
   onDrop(evt: DragEvent) {
     evt.preventDefault();
-    const data = JSON.parse(evt.dataTransfer.getData('text'));
-    const primaryCollection = this.mapping.getPrimaryCollection();
-    if (!primaryCollection) {
-      const dialogRef = this._matDialog.open(ConfirmDialogComponent, {});
-      dialogRef.afterClosed().subscribe( _res => {
-        if (_res) {
+    const data: { collection: string, field: string } = JSON.parse(evt.dataTransfer.getData('text'));
 
-        }
-      });
-    }
-    console.log(primaryCollection);
-    console.log('asdf', data);
+    console.log('droppedObj', data);
   }
 
 }

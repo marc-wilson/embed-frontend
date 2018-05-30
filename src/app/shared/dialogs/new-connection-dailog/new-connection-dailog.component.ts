@@ -17,7 +17,7 @@ export class NewConnectionDailogComponent implements OnInit {
   public connectionConfig: MongoDBConnection = new MongoDBConnection();
   public databaseService: DatabaseService;
   public databases = [];
-  public collections: { collection: string }[];
+  public collections: { collectionName: string }[];
   @ViewChild(MatSelectionList) collectionsList: MatSelectionList;
 
   public mapping: MongoDBMappingConfiguration;
@@ -33,7 +33,6 @@ export class NewConnectionDailogComponent implements OnInit {
   onConnectionSelected(connection: string, stepper: MatStepper) {
     switch (connection) {
       case 'MongoDB':
-        // this.connectionConfig = new MongoDBConnection();
         this.mapping = new MongoDBMappingConfiguration();
         break;
       default:
@@ -45,20 +44,16 @@ export class NewConnectionDailogComponent implements OnInit {
   async onConnectionStringChanged() {
     this.databases = await this.getDatabases();
   }
-  onDatabaseChange() {
-    this.getCollections();
-  }
-  async testConnection() {
-    const result = await this.databaseService.testConnection(this.connectionConfig);
-    // TODO: Icon for success/fail
+  async onDatabaseChange() {
+    this.collections = await this.getCollections();
   }
   async getDatabases() {
     const databases: any = await this.databaseService.getDatabases(this.mapping);
     return databases;
   }
-  async getCollections() {
-    const collections: { collection: string }[] = await this.databaseService.getCollections(this.mapping);
-    this.collections = collections;
+  async getCollections(): Promise<{ collectionName: string }[]> {
+    const collections: { collectionName: string }[] = await this.databaseService.getCollections(this.mapping);
+    return collections;
   }
   save(): void {
     const collections = this.collectionsList.selectedOptions.selected.map( item => item.value);

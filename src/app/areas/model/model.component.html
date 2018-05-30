@@ -1,7 +1,6 @@
-<script src="model.component.ts"></script>
 <mat-sidenav-container #sidenav>
   <mat-sidenav mode="side">
-    <mat-accordion>
+    <mat-accordion *ngIf="mapping">
       <mat-expansion-panel *ngFor="let collection of collections">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -31,14 +30,19 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar>
-      <div class="action-icon" (click)="onNewModel()">
-        <mat-icon>add_box</mat-icon>
+      <div id="actions">
+        <div class="action-icon" (click)="onNewModel()">
+          <mat-icon>add_box</mat-icon>
+        </div>
+        <div class="action-icon" (click)="save()">
+          <mat-icon>save</mat-icon>
+        </div>
+        <div class="action-icon" (click)="open()">
+          <mat-icon>folder</mat-icon>
+        </div>
       </div>
-      <div class="action-icon" (click)="save()">
-        <mat-icon>save</mat-icon>
-      </div>
-      <div class="action-icon" (click)="open()">
-        <mat-icon>folder</mat-icon>
+      <div id="collectionInfo" *ngIf="mapping">
+        {{mapping.mappingName}}
       </div>
     </mat-toolbar>
     <app-mapping-configuration [mapping]="mapping"></app-mapping-configuration>

@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MongoDBMappingConfiguration } from '../models/mapping/mongo-dbmapping-configuration';
+import { MongoDBCollectionMapping, MongoDBMappingConfiguration } from '../models/mapping/mongo-dbmapping-configuration';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -8,9 +8,18 @@ import { environment } from '../../../environments/environment';
 })
 export class MongoConfigurationService {
   private _httpClient: HttpClient;
+  private _currentMapping: MongoDBMappingConfiguration;
   public mappingEmitter: EventEmitter<MongoDBMappingConfiguration> = new EventEmitter<MongoDBMappingConfiguration>();
   constructor(_httpClient: HttpClient) {
     this._httpClient = _httpClient;
+  }
+  addMapping(mapping: MongoDBCollectionMapping) {
+    this._currentMapping.addMapping(mapping);
+    this.setCurrentMapping(this._currentMapping);
+  }
+  setCurrentMapping(mapping: MongoDBMappingConfiguration) {
+    this._currentMapping = mapping;
+    this.mappingEmitter.emit(this._currentMapping);
   }
   async save(mapping: MongoDBMappingConfiguration): Promise<MongoDBMappingConfiguration> {
     const res = this._httpClient.post<MongoDBMappingConfiguration>(

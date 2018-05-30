@@ -21,9 +21,9 @@ export class DatabaseService {
     const res = await this.httpClient.post(`${environment.apiPath}/database/databases`, mapping).toPromise();
     return res;
   }
-  async getCollections(mapping: MongoDBMappingConfiguration): Promise<{ collection: string }[]> {
+  async getCollections(mapping: MongoDBMappingConfiguration): Promise<{ collectionName: string }[]> {
     const res = await this.httpClient.post<any[]>(`${environment.apiPath}/database/databases/collections`, mapping).toPromise();
-    const collections: { collection: string }[] = res.map( c => ({ collection: c.name }));
+    const collections: { collectionName: string }[] = res.map( c => ({ collectionName: c.name }));
     return collections;
   }
   async getBulkCollectionInfo(mapping: MongoDBMappingConfiguration) {
