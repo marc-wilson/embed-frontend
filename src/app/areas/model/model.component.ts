@@ -6,7 +6,10 @@ import { DatabaseService } from '../../shared/services/database.service';
 import { MongoMapping } from '../../shared/models/mapping/mongo-mapping';
 import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { CollectionLinkDialogComponent } from '../../shared/dialogs/collection-link-dialog/collection-link-dialog.component';
-import { MongoDBMappingConfiguration } from '../../shared/models/mapping/mongo-dbmapping-configuration';
+import {
+  MongoDBCollectionMapping,
+  MongoDBMappingConfiguration
+} from '../../shared/models/mapping/mongo-dbmapping-configuration';
 import { MongoConfigurationService } from '../../shared/services/mongo-configuration.service';
 import { OpenMappingDialogComponent } from '../../shared/dialogs/open-mapping-dialog/open-mapping-dialog.component';
 
@@ -38,16 +41,29 @@ export class ModelComponent implements OnInit {
         this.mapping = _mapping;
         const primaryCollection = this.mapping.getPrimaryCollection();
         console.log('p', primaryCollection);
+        if (primaryCollection) {
+          this.updateCollectionLookup(primaryCollection);
+        }
       }
     });
+  }
+  updateCollectionLookup(primaryCollection: MongoDBCollectionMapping) {
+    if (this.collections) {
+      this.collections.forEach( c => {
+        c.primary = false;
+        if ( c.collection === primaryCollection.collectionName ) {
+          c.primary = true;
+        }
+      } );
+    }
   }
   onNewModel(): void {
     const dialogRef = this.matDialog.open(NewConnectionDailogComponent, {});
     dialogRef.afterClosed().subscribe( async (_mapping: MongoDBMappingConfiguration) => {
       if (_mapping) {
-        // this._mongoConfigService.setCurrentMapping(_mapping);
-        // this.collections = await this.loadSelectedCollectionsInfo(_mapping);
-        // await this.sidenav.open();
+        this._mongoConfigService.setCurrentMapping(_mapping);
+        this.collections = await this.loadSelectedCollectionsInfo(_mapping);
+        await this.sidenav.open();
       }
     });
   }
@@ -68,6 +84,10 @@ export class ModelComponent implements OnInit {
       const mapping = await this._mongoConfigService.getMapping(_mapping.mappingId);
       this._mongoConfigService.setCurrentMapping(mapping);
       this.collections = await this.loadSelectedCollectionsInfo(mapping);
+      const primaryCollection = mapping.getPrimaryCollection();
+      if (primaryCollection) {
+        this.updateCollectionLookup(primaryCollection);
+      }
       await this.sidenav.open();
     });
   }

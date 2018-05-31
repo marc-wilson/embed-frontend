@@ -21,9 +21,14 @@ export class MongoDBMappingConfiguration {
     this.mapping = this.mapping ? this.mapping : [];
     const matchedCollection = this.doesMappingExist(mapping);
     if (!matchedCollection) {
+      mapping.fields = mapping.fields ? mapping.fields : [];
       this.mapping.push(mapping);
+    } else {
+      matchedCollection.primary = mapping.primary;
+      mapping.fields.forEach( f => {
+        matchedCollection.addField(f);
+      });
     }
-    console.log('mapping', this.mapping);
   }
   doesMappingExist(mapping: MongoDBCollectionMapping): MongoDBCollectionMapping {
     if (this.mapping) {
@@ -44,6 +49,22 @@ export class MongoDBMappingConfiguration {
       return null;
     }
   }
+  getDisplayColumns(): string[] {
+    let fields = [];
+    if (this.mapping) {
+      this.mapping.forEach( m => {
+        const _fields = m.fields.map( f => {
+          if ( !fields.find( lf => lf === f.name ) ) {
+            return f.name;
+          }
+        } );
+        if (_fields) {
+          fields = fields.concat(_fields);
+        }
+      } );
+    }
+    return fields;
+  }
 }
 
 export class MongoDBCollectionMapping {
@@ -62,11 +83,15 @@ export class MongoDBCollectionMapping {
     }
   }
   addField(field: MongoDBField) {
-    console.log('addField', field);
+    this.fields = this.fields ? this.fields : [];
+    const match = this.fields.find( f => f.name === field.name );
+    if (!match) {
+      this.fields.push(field);
+    }
   }
 }
 
-class MongoDBField {
+export class MongoDBField {
   public name: string;
   public selected: boolean;
   constructor(field?) {

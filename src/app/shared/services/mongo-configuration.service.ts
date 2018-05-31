@@ -20,6 +20,7 @@ export class MongoConfigurationService {
   setCurrentMapping(mapping: MongoDBMappingConfiguration) {
     this._currentMapping = mapping;
     this.mappingEmitter.emit(this._currentMapping);
+    console.log('_currentMapping', this._currentMapping);
   }
   async save(mapping: MongoDBMappingConfiguration): Promise<MongoDBMappingConfiguration> {
     const res = this._httpClient.post<MongoDBMappingConfiguration>(
